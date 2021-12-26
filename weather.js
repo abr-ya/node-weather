@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 import { getArgs } from './helpers/args.js';
+import { printError, printSuccess, printHelp, printWeather } from './services/log.service.js';
 
 const initCLI = () => {
     const args = getArgs(process.argv);
-    console.log(args);
+    // console.log(args);
 
     if (args.h) {
-        // вывод help
+        printHelp();
     }
 
     if (args.s) {
@@ -17,7 +18,9 @@ const initCLI = () => {
         // сохранить токен
     }
 
-    // вывести погоду
+    if (Object.keys(args).length === 0) {
+        printWeather();
+    }
 };
 
 initCLI();
