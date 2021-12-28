@@ -1,9 +1,14 @@
 #!/usr/bin/env node
 import { getArgs } from './helpers/args.js';
 import { printError, printSuccess, printHelp, printWeather } from './services/log.service.js';
-import { saveKeyValue, getKeyValue } from './services/storage.service.js';
+import { saveKeyValue, getKeyValue, TOKEN_DICTIONARY } from './services/storage.service.js';
+import { getWeather } from './services/api.service.js';
 
 const saveToken = async (token) => {
+    if (!token.length) {
+        printError('Не передан токен.');
+        return
+    }
     try {
         await saveKeyValue('token', token);
         printSuccess('Токен сохранён)');
@@ -13,9 +18,18 @@ const saveToken = async (token) => {
     }
 };
 
+const getForecast = async () => {
+	try {
+		const city = await getKeyValue(TOKEN_DICTIONARY.city);
+		const weather = await getWeather(city || 'moscow');
+		printWeather(weather);
+	} catch (e) {
+		printError(e.message);
+	}
+};
+
 const initCLI = () => {
-    const args = getArgs(process.argv);
-    // console.log(args);
+    const args = getArgs(process.argv); // преобразуем аргументы вызова в объект
 
     if (args.h) {
         printHelp();
@@ -32,7 +46,7 @@ const initCLI = () => {
     }
 
     if (Object.keys(args).length === 0) {
-        printWeather();
+        getForecast();
     }
 };
 
