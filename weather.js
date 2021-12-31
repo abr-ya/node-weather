@@ -18,13 +18,21 @@ const saveToken = async (token) => {
     }
 };
 
+// основной запрос погоды сейчас здесь!
+// обработка ошибок будет здесь же
 const getForecast = async () => {
 	try {
 		const city = await getKeyValue(TOKEN_DICTIONARY.city);
 		const weather = await getWeather(city || 'moscow');
 		printWeather(weather);
 	} catch (e) {
-		printError(e.message);
+        if (e?.response?.status === 404) {
+            printError('Неверно указан город (ошибка Axios 404)');
+        } else if (e?.response?.status === 401) {
+            printError('Неверно указан токен (ошибка Axios 401)');
+        } else {
+            printError(e.message);
+        }
 	}
 };
 
