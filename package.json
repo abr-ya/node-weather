@@ -1,5 +1,5 @@
 {
-  "name": "weather",
+  "name": "@abr-ya/weather",
   "version": "1.0.0",
   "description": "",
   "main": "weather.js",
@@ -13,6 +13,9 @@
   "keywords": [],
   "author": "abr-ya",
   "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "axios": "^0.24.0",
     "chalk": "^5.0.0",
